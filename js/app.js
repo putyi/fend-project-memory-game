@@ -58,21 +58,19 @@ const openCards = [];
 let clickedCard; 
 const matchedCards = [];
 const nrOfLegalEvents = [];
-
+const audioError = document.getElementById("audioError"); 
+const audioEnd = document.getElementById("audioEnd");
+const audioDone = document.getElementById("audioDone");
 
 const handleCards = {
     displaySymbol: function(z) {
         z.classList.add("show", "open");
     },
-    //displaySymbol2: function(z) {
-    //    z.classList.add("show", "open");
-    //},
     checkIfMatch: function(x, y) {
         console.log(x.innerHTML, y.innerHTML);
         if (x.innerHTML === y.innerHTML) {
             this.lockCards(x, y);
         } else {
-            //openCards.splice(0, 2);
             return;
         }
     },
@@ -94,15 +92,28 @@ const handleCards = {
         nrOfMoves.textContent = nrOfLegalEvents.length + " Moves";
     },
     checkIfAllMatced: function() {
-        if (matchedCards.length = 16) {
+        if (matchedCards.length === 16) {
             this.end();
+        } else {
+            this.playAudioDone();
         }
     },
     end: function() {
         // stop timer
-        // start music
-        // alert you found all pairs
-        // stars
+        this.playAudioEnd();
+        const endMessage = document.createElement("div");
+        endMessage.id = "end";
+        deck.appendChild(endMessage);
+        endMessage.textContent = nrOfLegalEvents.length + " Moves in time rating";
+    },
+    playAudioError: function() { 
+        audioError.play(); 
+    },
+    playAudioEnd: function() {
+        audioEnd.play();
+    },
+    playAudioDone: function() {
+        audioDone.play();
     }
 };
 
@@ -130,9 +141,9 @@ deck.addEventListener("click", function(event){
         console.log(nrOfLegalEvents);
         handleCards.displayNrOfLegalEvents();
         handleCards.displaySymbol(clickedCard); 
-    } else if (clickedCard.id === openCards[0].id || clickedCard.id === openCards[1].id) {
-        alert("Watch out, you've already clicked this shit!");
-        // or remove event listener?
+    } else if (clickedCard.className === "card show open" || 
+        clickedCard.className === "card show match" || clickedCard.tagName === "I") {
+        handleCards.playAudioError();
         return;
     } else if (openCards.length === 2) {
         handleCards.turnBack(openCards[0], openCards[1]);
@@ -142,19 +153,13 @@ deck.addEventListener("click", function(event){
         handleCards.displayNrOfLegalEvents();
         console.log(nrOfLegalEvents);
         handleCards.displaySymbol(clickedCard);
-    } /*else if (openCards.length === 0) {
-        openCards.push(clickedCard);
-        nrOfLegalEvents.push(number);
-        console.log(nrOfLegalEvents);
-        handleCards.displaySymbol(clickedCard);
-    }*/ else {
+    } else {
         openCards.push(clickedCard);
         nrOfLegalEvents.push(clickedCard.id);
         console.log(nrOfLegalEvents);
         handleCards.displayNrOfLegalEvents();
         handleCards.displaySymbol(clickedCard);
         console.log(openCards);
-        //let time = setInterval(handleCards.checkIfMatch(clickedCard1, clickedCard2), 3000);
         handleCards.checkIfMatch(openCards[0], openCards[1]);
     }
 });
