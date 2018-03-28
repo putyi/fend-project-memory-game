@@ -54,17 +54,16 @@ function addToDom() {
 
 document.addEventListener('DOMContentLoaded', addToDom);
 
-
-
  //- display the card's symbol (put this functionality
  //in another function that you call from this one)
 const openCards = [];
-let clickedCard; 
+let clickedCard;
 const matchedCards = [];
 const nrOfLegalEvents = [];
-const audioError = document.getElementById("audioError"); 
+const audioError = document.getElementById("audioError");
 const audioEnd = document.getElementById("audioEnd");
 const audioDone = document.getElementById("audioDone");
+let t; // for timer
 
 const handleCards = {
     displaySymbol: function(z) {
@@ -95,10 +94,10 @@ const handleCards = {
     displayStars: function() {
         let nrOfStars;
         if (nrOfLegalEvents.length <= 23) {
-            nrOfStars = 3;  
+            nrOfStars = 3;
         } else if (nrOfLegalEvents.length > 23 && nrOfLegalEvents.length <= 35) {
-            nrOfStars = 2;  
-        } else { 
+            nrOfStars = 2;
+        } else {
             nrOfStars = 1;
         }
         while (stars.hasChildNodes()) {
@@ -107,7 +106,7 @@ const handleCards = {
         for (let i = 1; i <= nrOfStars ; i++) {
             const star = document.createElement("li");
             const starIcon = document.createElement("i");
-            starIcon.className = "fa fa-star"; 
+            starIcon.className = "fa fa-star";
             stars.appendChild(star);
             star.id = i;
             star.appendChild(starIcon);
@@ -124,15 +123,15 @@ const handleCards = {
         }
     },
     end: function() {
-        // stop timer
+        clearTimeout(t);
         this.playAudioEnd();
         const endMessage = document.createElement("div");
         endMessage.id = "end";
         deck.appendChild(endMessage);
         endMessage.textContent = nrOfLegalEvents.length + " Moves in time rating";
     },
-    playAudioError: function() { 
-        audioError.play(); 
+    playAudioError: function() {
+        audioError.play();
     },
     playAudioEnd: function() {
         audioEnd.play();
@@ -142,13 +141,36 @@ const handleCards = {
     }
 };
 
- //  - add the card to a *list* of "open" cards 
+let seconds = 0;
+let mints = 0;
+var startchron = 0;
+
+function chronometer() {
+    if(startchron == 1) {
+        seconds += 1;
+    }
+    if(seconds > 59) {
+        seconds = 0;
+        mints += 1;
+      }
+    const timer = document.getElementById("Timer");
+    timer.textContent = (mints ? (mints > 9 ? mints : "0" + mints)
+     : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+     time();
+}
+function time() {
+    t = setTimeout(chronometer, 1000);
+}
+function startChr() {
+    startchron = 1; chronometer();
+}
+ //  - add the card to a *list* of "open" cards
  // (put this functionality in another function that you call from this one)
  //  - if the list already has another card, check to see if the two cards match
- //    + if the cards do match, lock the cards in the open position 
+ //    + if the cards do match, lock the cards in the open position
  // (put this functionality in another function that you call from this one)
  //    + if the cards do not match,
- //  remove the cards from the list and hide the card's symbol 
+ //  remove the cards from the list and hide the card's symbol
  // (put this functionality in another function that you call from this one)
  //    + increment the move counter and display it on the page
  //  (put this functionality in another function that you call from this one)
@@ -160,14 +182,14 @@ deck.addEventListener("click", function(event){
     console.log(event.target);
     clickedCard = event.target;
     if (openCards.length === 0 && matchedCards.length === 0) {
-        //start timer   
+        startChr();
         openCards.push(clickedCard);
         nrOfLegalEvents.push(clickedCard.id);
         console.log(nrOfLegalEvents);
         handleCards.displayNrOfLegalEvents();
         handleCards.displayStars();
-        handleCards.displaySymbol(clickedCard); 
-    } else if (clickedCard.className === "card show open" || 
+        handleCards.displaySymbol(clickedCard);
+    } else if (clickedCard.className === "card show open" ||
         clickedCard.className === "card show match" || clickedCard.tagName === "I") {
         handleCards.playAudioError();
         return;
@@ -191,5 +213,3 @@ deck.addEventListener("click", function(event){
         handleCards.checkIfMatch(openCards[0], openCards[1]);
     }
 });
-
-
