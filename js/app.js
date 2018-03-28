@@ -8,7 +8,10 @@ const arrayOfCards = [
     "fa fa-cube", "fa fa-anchor", "fa fa-leaf", "fa fa-bicycle", "fa fa-diamond", "fa fa-bomb",
     "fa fa-leaf", "fa fa-bomb", "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"
 ];
+
 let nrOfMoves = document.querySelector("span");
+const stars = document.querySelector(".stars");
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -35,6 +38,7 @@ function shuffle(arrayOfCards) {
 
 function addToDom() {
     shuffle(arrayOfCards);
+    handleCards.displayStars();
     handleCards.displayNrOfLegalEvents();
 
     for (let i = 0; i <= arrayOfCards.length - 1; i++) {
@@ -88,6 +92,27 @@ const handleCards = {
         y.classList.toggle("open");
         y.classList.toggle("show");
     },
+    displayStars: function() {
+        let nrOfStars;
+        if (nrOfLegalEvents.length <= 23) {
+            nrOfStars = 3;  
+        } else if (nrOfLegalEvents.length > 23 && nrOfLegalEvents.length <= 35) {
+            nrOfStars = 2;  
+        } else { 
+            nrOfStars = 1;
+        }
+        while (stars.hasChildNodes()) {
+            stars.removeChild(stars.childNodes[0]);
+          };
+        for (let i = 1; i <= nrOfStars ; i++) {
+            const star = document.createElement("li");
+            const starIcon = document.createElement("i");
+            starIcon.className = "fa fa-star"; 
+            stars.appendChild(star);
+            star.id = i;
+            star.appendChild(starIcon);
+        }
+    },
     displayNrOfLegalEvents: function() {
         nrOfMoves.textContent = nrOfLegalEvents.length + " Moves";
     },
@@ -140,6 +165,7 @@ deck.addEventListener("click", function(event){
         nrOfLegalEvents.push(clickedCard.id);
         console.log(nrOfLegalEvents);
         handleCards.displayNrOfLegalEvents();
+        handleCards.displayStars();
         handleCards.displaySymbol(clickedCard); 
     } else if (clickedCard.className === "card show open" || 
         clickedCard.className === "card show match" || clickedCard.tagName === "I") {
@@ -151,6 +177,7 @@ deck.addEventListener("click", function(event){
         openCards.push(clickedCard);
         nrOfLegalEvents.push(clickedCard.id);
         handleCards.displayNrOfLegalEvents();
+        handleCards.displayStars();
         console.log(nrOfLegalEvents);
         handleCards.displaySymbol(clickedCard);
     } else {
@@ -158,6 +185,7 @@ deck.addEventListener("click", function(event){
         nrOfLegalEvents.push(clickedCard.id);
         console.log(nrOfLegalEvents);
         handleCards.displayNrOfLegalEvents();
+        handleCards.displayStars();
         handleCards.displaySymbol(clickedCard);
         console.log(openCards);
         handleCards.checkIfMatch(openCards[0], openCards[1]);
