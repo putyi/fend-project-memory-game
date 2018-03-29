@@ -11,6 +11,7 @@ const arrayOfCards = [
 
 let nrOfMoves = document.querySelector("span");
 const stars = document.querySelector(".stars");
+const restart = document.querySelector(".restart");
 
 /*
  * Display the cards on the page
@@ -56,10 +57,10 @@ document.addEventListener('DOMContentLoaded', addToDom);
 
  //- display the card's symbol (put this functionality
  //in another function that you call from this one)
-const openCards = [];
+let openCards = [];
 let clickedCard;
-const matchedCards = [];
-const nrOfLegalEvents = [];
+let matchedCards = [];
+let nrOfLegalEvents = [];
 const audioError = document.getElementById("audioError");
 const audioEnd = document.getElementById("audioEnd");
 const audioDone = document.getElementById("audioDone");
@@ -153,13 +154,14 @@ function chronometer() {
         seconds = 0;
         mints += 1;
       }
-    const timer = document.getElementById("Timer");
+    const timer = document.getElementById("timer");
     timer.textContent = (mints ? (mints > 9 ? mints : "0" + mints)
      : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
      time();
 }
 function time() {
     t = setTimeout(chronometer, 1000);
+    //console.log(timer.textContent);
 }
 function startChr() {
     startchron = 1; chronometer();
@@ -212,4 +214,29 @@ deck.addEventListener("click", function(event){
         console.log(openCards);
         handleCards.checkIfMatch(openCards[0], openCards[1]);
     }
+});
+
+restart.addEventListener("click", function() {
+    while (deck.hasChildNodes()) {
+    deck.removeChild(deck.childNodes[0]);
+    }
+    seconds = 0;
+    mints = 0;
+    startchron = 0;
+    nrOfLegalEvents = [];
+    /*for (let i = nrOfLegalEvents.length - 1; i >= 0; i--) {
+        nrOfLegalEvents.pop();
+        console.log("Events" + nrOfLegalEvents);
+    }*/
+    openCards = [];
+    /*for (let i = openCards.length - 1; i >= 0; i--) {
+        openCards.pop();
+        console.log("Open crds" + openCards)
+    }*/
+    matchedCards = [];
+    /*for (let i = matchedCards.length - 1; i >= 0; i--) {
+        matchedCards.pop();
+        console.log("Match" + matchedCards);
+    }*/
+    addToDom();
 });

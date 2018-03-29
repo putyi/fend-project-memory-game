@@ -107,3 +107,8 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+/* styling the chronometer */
+.moves, #timer {
+    font: bold small-caps normal 18px/150% Arial, Helvetica, sans-serif;
+}
