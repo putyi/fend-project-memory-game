@@ -112,3 +112,50 @@ h1 {
 .moves, #timer {
     font: bold small-caps normal 18px/150% Arial, Helvetica, sans-serif;
 }
+
+/* popup container */
+.popup {
+    position: absolute;
+    visibility: hidden;
+}
+
+/* The actual popup */
+.popup .popuptext {
+    visibility: hidden;
+    width: 600px;
+    background-color: rgb(182, 179, 179);
+    color: #f80606;
+    text-align: center;
+    font-size: 2.5em;
+    padding: 8px 0;
+    opacity: 0.7;
+    position: relative;
+    z-index: 1;
+    /*margin-left: -197px;*/
+}
+
+.popuptext ul li{
+    display: inline-block;
+    list-style-type: none;
+    position: relative;
+}
+
+.popuptext #again {
+    font-size: 2.5em;
+    color: #ffffff;
+    cursor: pointer;
+    position: relative;
+}
+/* Toggle this class - hide and show the popup */
+.popup .show {
+    visibility: visible;
+    /*position: absolute;*/
+}
+
+@media screen {
+    
+}
+
+@media screen {
+    
+}

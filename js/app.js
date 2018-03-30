@@ -64,6 +64,7 @@ let nrOfLegalEvents = [];
 const audioError = document.getElementById("audioError");
 const audioEnd = document.getElementById("audioEnd");
 const audioDone = document.getElementById("audioDone");
+let nrOfStars;
 let t; // for timer
 
 const handleCards = {
@@ -93,7 +94,6 @@ const handleCards = {
         y.classList.toggle("show");
     },
     displayStars: function() {
-        let nrOfStars;
         if (nrOfLegalEvents.length <= 23) {
             nrOfStars = 3;
         } else if (nrOfLegalEvents.length > 23 && nrOfLegalEvents.length <= 35) {
@@ -126,10 +126,7 @@ const handleCards = {
     end: function() {
         clearTimeout(t);
         this.playAudioEnd();
-        const endMessage = document.createElement("div");
-        endMessage.id = "end";
-        deck.appendChild(endMessage);
-        endMessage.textContent = nrOfLegalEvents.length + " Moves in time rating";
+        showPopup();
     },
     playAudioError: function() {
         audioError.play();
@@ -183,7 +180,8 @@ function startChr() {
 deck.addEventListener("click", function(event){
     console.log(event.target);
     clickedCard = event.target;
-    if (openCards.length === 0 && matchedCards.length === 0) {
+    if (openCards.length === 0 && matchedCards.length === 0 && 
+        clickedCard.tagName !== "UL") {
         startChr();
         openCards.push(clickedCard);
         nrOfLegalEvents.push(clickedCard.id);
@@ -192,7 +190,8 @@ deck.addEventListener("click", function(event){
         handleCards.displayStars();
         handleCards.displaySymbol(clickedCard);
     } else if (clickedCard.className === "card show open" ||
-        clickedCard.className === "card show match" || clickedCard.tagName === "I") {
+        clickedCard.className === "card show match" || clickedCard.tagName === "I" ||
+        clickedCard.tagName === "UL") {
         handleCards.playAudioError();
         return;
     } else if (openCards.length === 2) {
@@ -217,26 +216,42 @@ deck.addEventListener("click", function(event){
 });
 
 restart.addEventListener("click", function() {
-    while (deck.hasChildNodes()) {
-    deck.removeChild(deck.childNodes[0]);
+    location.reload();
+});
+
+// When the user clicks on div, open the popup
+const popup = document.getElementById("myPopup");
+const starSpan = document.getElementById("popStars");
+const playAgain = document.getElementById("playAgain");
+
+function showPopup() {
+    let popMesssage = `CONGRATULATIONS! 
+    You did it! ${nrOfLegalEvents.length} moves,
+    in ${timer.textContent} time.`;
+    popup.textContent = popMesssage; 
+
+const starContainer = document.createElement("ul");
+starSpan.appendChild(starContainer);
+    for (let i = 1; i <= nrOfStars ; i++) {
+        const star = document.createElement("li");
+        const starIcon = document.createElement("i");
+        starIcon.className = "fa fa-star";
+        starContainer.appendChild(star);
+        star.appendChild(starIcon);
+        star.id = i;
     }
-    seconds = 0;
-    mints = 0;
-    startchron = 0;
-    nrOfLegalEvents = [];
-    /*for (let i = nrOfLegalEvents.length - 1; i >= 0; i--) {
-        nrOfLegalEvents.pop();
-        console.log("Events" + nrOfLegalEvents);
-    }*/
-    openCards = [];
-    /*for (let i = openCards.length - 1; i >= 0; i--) {
-        openCards.pop();
-        console.log("Open crds" + openCards)
-    }*/
-    matchedCards = [];
-    /*for (let i = matchedCards.length - 1; i >= 0; i--) {
-        matchedCards.pop();
-        console.log("Match" + matchedCards);
-    }*/
-    addToDom();
+
+
+let againIcon = document.createElement("i");
+againIcon.className = "fa fa-repeat";
+againIcon.id = "again";
+playAgain.appendChild(againIcon);
+
+popup.classList.toggle("show");
+starSpan.classList.toggle("show");  
+playAgain.classList.toggle("show");  
+}
+
+playAgain.addEventListener("click", function(){
+    location.reload();
 });
