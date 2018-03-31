@@ -126,7 +126,7 @@ h1 {
     background-color: rgb(182, 179, 179);
     color: #f80606;
     text-align: center;
-    font-size: 2.5em;
+    font-size: 2.0em;
     padding: 8px 0;
     opacity: 0.7;
     position: relative;
@@ -140,7 +140,7 @@ h1 {
 }
 
 .popuptext #again {
-    font-size: 2.5em;
+    font-size: 2.0em;
     color: #ffffff;
     cursor: pointer;
     position: relative;
@@ -176,6 +176,12 @@ h1 {
     }
     .deck .card {
         height: 100px;
+    }
+    .popup .popuptext {
+        font-size: 1.5em;
+    }
+    .popuptext #again {
+        font-size: 1.5em;
     }
 }
 

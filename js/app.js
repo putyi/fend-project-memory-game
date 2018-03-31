@@ -182,14 +182,12 @@ function startChr() {
 //class and fires the handlecard functions. Be careful!! If the user clicks on an
 //opened card or clicks between or near cards, it shouldn't do anything!
 deck.addEventListener("click", function(event){
-    console.log(event.target);
     clickedCard = event.target;
     if (openCards.length === 0 && matchedCards.length === 0 && 
         clickedCard.tagName !== "UL") {
         startChr();
         openCards.push(clickedCard);
         nrOfLegalEvents.push(clickedCard.id);
-        console.log(nrOfLegalEvents);
         handleCards.displayNrOfLegalEvents();
         handleCards.displayStars();
         handleCards.displaySymbol(clickedCard);
@@ -205,16 +203,13 @@ deck.addEventListener("click", function(event){
         nrOfLegalEvents.push(clickedCard.id);
         handleCards.displayNrOfLegalEvents();
         handleCards.displayStars();
-        console.log(nrOfLegalEvents);
         handleCards.displaySymbol(clickedCard);
     } else {
         openCards.push(clickedCard);
         nrOfLegalEvents.push(clickedCard.id);
-        console.log(nrOfLegalEvents);
         handleCards.displayNrOfLegalEvents();
         handleCards.displayStars();
         handleCards.displaySymbol(clickedCard);
-        console.log(openCards);
         handleCards.checkIfMatch(openCards[0], openCards[1]);
     }
 });
