@@ -33,10 +33,9 @@ function shuffle(arrayOfCards) {
     }
 
     return arrayOfCards;
-    //in case you want to check the shuffeled arrayOfCards
-    //console.log(arrayOfCards);
 }
 
+//TODO: create a function for event listener on loading the page
 function addToDom() {
     shuffle(arrayOfCards);
     handleCards.displayStars();
@@ -53,10 +52,13 @@ function addToDom() {
     }
 }
 
+//TODO: create event listener for loading the DOM
 document.addEventListener('DOMContentLoaded', addToDom);
 
  //- display the card's symbol (put this functionality
  //in another function that you call from this one)
+
+ //TODO: set up functions to handle cards...
 let openCards = [];
 let clickedCard;
 let matchedCards = [];
@@ -72,7 +74,6 @@ const handleCards = {
         z.classList.add("show", "open");
     },
     checkIfMatch: function(x, y) {
-        console.log(x.innerHTML, y.innerHTML);
         if (x.innerHTML === y.innerHTML) {
             this.lockCards(x, y);
         } else {
@@ -101,9 +102,11 @@ const handleCards = {
         } else {
             nrOfStars = 1;
         }
+
         while (stars.hasChildNodes()) {
             stars.removeChild(stars.childNodes[0]);
           };
+
         for (let i = 1; i <= nrOfStars ; i++) {
             const star = document.createElement("li");
             const starIcon = document.createElement("i");
@@ -158,7 +161,6 @@ function chronometer() {
 }
 function time() {
     t = setTimeout(chronometer, 1000);
-    //console.log(timer.textContent);
 }
 function startChr() {
     startchron = 1; chronometer();
@@ -176,7 +178,9 @@ function startChr() {
  //    + if all cards have matched, display a message with the final score 
  // (put this functionality in another function that you call from this one)
  
-// set up the event listener for a card. If a card is clicked:
+// TODO: set up the event listener for a card. If a card is clicked: toggle open
+//class and fires the handlecard functions. Be careful!! If the user clicks on an
+//opened card or clicks between or near cards, it shouldn't do anything!
 deck.addEventListener("click", function(event){
     console.log(event.target);
     clickedCard = event.target;
@@ -215,23 +219,24 @@ deck.addEventListener("click", function(event){
     }
 });
 
+//TODO: if the restart button is clicked, reload the page
 restart.addEventListener("click", function() {
     location.reload();
 });
 
-// When the user clicks on div, open the popup
+// TODO: when game is finished, open up popup
 const popup = document.getElementById("myPopup");
 const starSpan = document.getElementById("popStars");
 const playAgain = document.getElementById("playAgain");
 
 function showPopup() {
-    let popMesssage = `CONGRATULATIONS! 
-    You did it! ${nrOfLegalEvents.length} moves,
-    in ${timer.textContent} time.`;
-    popup.textContent = popMesssage; 
+    let popMesssage = "<p> CONGRATULATIONS! You did it!<br>"+nrOfLegalEvents.length+" moves,<br>"+
+    timer.textContent+" time.</p>";
+    popup.innerHTML = popMesssage;
 
 const starContainer = document.createElement("ul");
 starSpan.appendChild(starContainer);
+
     for (let i = 1; i <= nrOfStars ; i++) {
         const star = document.createElement("li");
         const starIcon = document.createElement("i");
@@ -241,17 +246,17 @@ starSpan.appendChild(starContainer);
         star.id = i;
     }
 
-
 let againIcon = document.createElement("i");
 againIcon.className = "fa fa-repeat";
 againIcon.id = "again";
 playAgain.appendChild(againIcon);
 
 popup.classList.toggle("show");
-starSpan.classList.toggle("show");  
-playAgain.classList.toggle("show");  
+starSpan.classList.toggle("show");
+playAgain.classList.toggle("show");
 }
 
+//TODO: click restart on popup message
 playAgain.addEventListener("click", function(){
     location.reload();
 });
